@@ -5,6 +5,14 @@
   margin-bottom: 50px;
 }
 
+.post {
+  display: inline-block;
+  width: 100%;
+  height: auto;
+  background-color: white;
+  margin-bottom: 50px;
+}
+
 .cabecalhoHeader {
   display: inline-block;
   height: auto;
