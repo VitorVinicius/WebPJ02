@@ -1,3 +1,10 @@
+input{
+    width : 80%;
+    margin: 10px;
+    font-family: "raleway", Times, serif;
+    box-sizing: border-box;
+}
+
 .cabecalho {
   width: 100%;
   height: auto;
@@ -56,6 +63,9 @@
 .label {
   color: rgb(77, 77, 77);
   font-family: "raleway", Times, serif;
+}
+.formulario{
+	margin-left: 15%;
 }
 
 .textoSup {
