@@ -112,6 +112,7 @@ public class Postar extends HttpServlet {
                     int rs = stmt.executeUpdate();
                     
                     if (rs > 0){
+                        response.sendRedirect("index.jsp");//redireciona para a página principal
                         out.println(request.getParameter("titulo") + " Inserido com sucesso!");
                     }
                     else

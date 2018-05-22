@@ -46,7 +46,7 @@
       <div class="conteudoCab">
         <div class="img"><img href='<%=  post.getImagem()%>'/></div>
         <div class="tamanho">
-            <h1 class="label"><%=  post.getTitulo() %></h1>
+            <h1 class="label"><a href="./editar.jsp?id=<%=  post.getId()%>"><%=  post.getTitulo() %></a></h1>
           <label class="textoSup"><%=  post.getTexto()%></label>
           <div>
             <!--<input class="botaoGetStarted" type="button" value="GET STARTED" />-->
