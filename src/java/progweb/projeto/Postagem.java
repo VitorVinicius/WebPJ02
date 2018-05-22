@@ -43,4 +43,13 @@ public class Postagem {
     String titulo;
     String imagem;
     String texto;
+    int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

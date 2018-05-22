@@ -1,3 +1,15 @@
+<%-- 
+    Document   : postar
+    Created on : 22/05/2018, 17:11:57
+    Author     : Aluno
+--%>
+
+
+<%@page import="java.util.ArrayList"%>
+<%@page import="progweb.projeto.Postagem"%>
+<%@page import="progweb.projeto.Blog"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 
 <html>
@@ -26,19 +38,17 @@
       </div>
     </div>
       <hr/>
-      <div class="cabecalho">
-     
-      <div class="conteudoCab">
-        <div class="img"></div>
-        <div class="tamanho">
-          <h1 class="label">Reflex</h1>
-          <label class="textoSup">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed molestie quam neque, non aliquam quam tempor sed.</label>
-          <div>
-            <input class="botaoGetStarted" type="button" value="GET STARTED" />
-          </div>
-        </div>
-      </div>
-    </div>
+      <form action ="./Postar" method="post" accept-charset="utf-8">
+            <p><label for="nome">Título: </label>
+            <input type = "text" name = "titulo" id ="titulo"  value = ""></p>
+            <p><label for="nome">Imagem: </label>
+            <input type = "text" name = "imagem" id = "imagem" value = ""></p>
+            <p><label for="nome">Texto: </label>
+            <input type = "text" name = "texto" id = "texto" value = ""></p>
+            <p><input type="submit" name = "enviar" value = "Postar"></p>
+      </form>
+      
+      
   <hr/>
     <div class="conteudo">
       <div class="textoInf">
