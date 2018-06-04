@@ -29,7 +29,7 @@
         <div class="img"></div>
         <div class="tamanho">
           <h1 class="label">Reflex</h1>
-          <label class="textoSup">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed molestie quam neque, non aliquam quam tempor sed.</label>
+          <label class="textoSup">Bem Vindo ao Blog <%=  (request.getSession().getAttribute("logado") == null ?"":request.getSession().getAttribute("nomeUsuario")+"!")%></label>
           <div>
             <input class="botaoGetStarted" type="button" value="GET STARTED" />
           </div>

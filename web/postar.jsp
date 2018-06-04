@@ -38,11 +38,11 @@
       </div>
     </div>
       <hr/>
-      <form action ="./Postar" method="post" accept-charset="utf-8">
+      <form action ="./Postar" method="post" accept-charset="utf-8" enctype="multipart/form-data">
             <p><label for="nome">Título: </label>
             <input type = "text" name = "titulo" id ="titulo"  value = ""></p>
             <p><label for="nome">Imagem: </label>
-            <input type = "text" name = "imagem" id = "imagem" value = ""></p>
+            <input type = "file" name = "imagem" id = "imagem" value = ""></p>
             <p><label for="nome">Texto: </label>
             <input type = "text" name = "texto" id = "texto" value = ""></p>
             <p><input type="submit" name = "enviar" value = "Postar"></p>

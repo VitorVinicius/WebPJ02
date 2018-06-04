@@ -84,6 +84,10 @@ public class Login extends HttpServlet {
                             out.println("Logado com sucesso.");
                             //estabelecer sessão aqui!!
                             
+                            request.getSession().setAttribute("logado", true);
+                            request.getSession().setAttribute("nomeUsuario", usuario);
+                            
+                            
                              response.sendRedirect("index.jsp");//redireciona para a página principal
                              return;
                              //break;

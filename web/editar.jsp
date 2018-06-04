@@ -43,12 +43,12 @@
     </div>
       <hr/>
       <h1>Editar Postagem</h1>
-        <form action ="./Editar" method="post" accept-charset="utf-8">
+        <form action ="./Editar" method="post" accept-charset="utf-8"  enctype="multipart/form-data">
             <input type = "hidden" name="id" value ="<%= postagem.getId() %>" />
             <p><label for="nome">Título: </label>
             <input type = "text" name = "titulo" id ="titulo"  value = "<%= postagem.getTitulo() %>"></p>
             <p><label for="nome">Imagem: </label>
-            <input type = "text" name = "imagem" id = "imagem" value = "<%= postagem.getImagem()%>"></p>
+            <input type = "file" name = "imagem" id = "imagem" value = "<%= postagem.getImagem()%>"></p>
             <p><label for="nome">Texto: </label>
             <input type = "text" name = "texto" id = "texto" value = "<%= postagem.getTexto()%>"></p>
             <p><input type="submit" name = "Salvar" value = "Salvar"></p>

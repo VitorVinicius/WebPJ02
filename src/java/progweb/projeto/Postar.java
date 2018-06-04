@@ -6,7 +6,12 @@
 package progweb.projeto;
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,61 +22,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.Part;
 /**
  *
  * @author Aluno
  */
 @WebServlet(name = "Postar", urlPatterns = {"/Postar"})
+@MultipartConfig
 public class Postar extends HttpServlet {
-
- 
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        //processRequest(request, response);
-        
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Postar</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Inserir Postagem</h1>");
-            /*out.println("<a href='/WebApplication1/A'/>A</a> | <a href='/WebApplication1/B'/>B</a> | <a href='/WebApplication1/C'/>C</a>");*/           
-            out.println ("<form action =\"./Postar\" method=\"post\" accept-charset=\"utf-8\">");
-            out.println ("<p><label for=\"nome\">Título: </label>");
-            out.println ("<input type = \"text\" name = \"titulo\" id =\"titulo\"  value = \"\"></p>");         
-            out.println ("<p><label for=\"nome\">Imagem: </label>");
-            out.println ("<input type = \"text\" name = \"imagem\" id = \"imagem\" value = \"\"></p>");
-            out.println ("<p><label for=\"nome\">Texto: </label>");        
-            out.println ("<input type = \"text\" name = \"texto\" id = \"texto\" value = \"\"></p>");
-            out.println ("<p><input type=\"submit\" name = \"enviar\" value = \"enviar\"></p>");
-
- 
-            out.println("</body>");
-            out.println("</html>");
-        }
-        
-        
-        
-        
-        
-    }
-
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -79,6 +38,14 @@ public class Postar extends HttpServlet {
         //processRequest(request, response);
         
         response.setContentType("text/html;charset=UTF-8");
+        
+        // Create path components to save the file
+        final String path = "C:\\arquivos";
+        final Part filePart = request.getPart("imagem");
+        final String fileName = getFileName(filePart);
+        
+        InputStream filecontent = null;
+         OutputStream outFile = null;
         try (PrintWriter out = response.getWriter()) {
 
             /* TODO output your page here. You may use following sample code. */
@@ -99,33 +66,70 @@ public class Postar extends HttpServlet {
             // Registrado o driver, vamos estabelecer uma conexão  
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
                 try ( //Class.forName("com.mysql.jdbc.Driver");
-                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost/blog", "root", "utfpr")) {
+                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost/blog?useTimezone=true&serverTimezone=UTC", "root", "utfpr")) {
                     String consulta = "insert into postagem(titulo, imagem, texto) values (?, ?, ?)";
                     //String consulta = "insert into postagem(titulo, imagem, texto) values ('21312', 'fwe', 'erw')";
                     PreparedStatement stmt = con.prepareStatement (consulta);
                     
                     
                     stmt.setString(1,request.getParameter("titulo"));
-                    stmt.setString(2,request.getParameter("imagem"));
+                    stmt.setString(2,"/download?file="+fileName);
                     stmt.setString(3,request.getParameter("texto"));
+                    
+                    
+                    outFile = new FileOutputStream(new File(path + File.separator
+                                + fileName));
+                        filecontent = filePart.getInputStream();
+
+                        int read = 0;
+                        final byte[] bytes = new byte[1024];
+
+                        while ((read = filecontent.read(bytes)) != -1) {
+                            outFile.write(bytes, 0, read);
+                        }
+                    
                     
                     int rs = stmt.executeUpdate();
                     
                     if (rs > 0){
                         response.sendRedirect("index.jsp");//redireciona para a página principal
                         out.println(request.getParameter("titulo") + " Inserido com sucesso!");
+                        
                     }
                     else
                     {
                         out.println("Erro!");
                     }   }
+                
+                
+                
 
         } catch (SQLException e) {
             // se houve algum erro, uma exceção é gerada para informar o erro   
             e.printStackTrace(); //vejamos que erro foi gerado e quem o gerou 
             
             out.println(e.getMessage());
-        }          
+        }
+            catch (FileNotFoundException fne) {
+        out.println("You either did not specify a file to upload or are "
+                + "trying to upload a file to a protected or nonexistent "
+                + "location.");
+        out.println("<br/> ERROR: " + fne.getMessage());
+
+        //LOGGER.log(Level.SEVERE, "Problems during file upload. Error: {0}", 
+          //      new Object[]{fne.getMessage()});
+    } finally {
+        if (outFile != null) {
+            outFile.close();
+        }
+        if (filecontent != null) {
+            filecontent.close();
+        }
+        if (out != null) {
+            out.close();
+        }
+    }
+            
             }
             
             
@@ -139,11 +143,21 @@ public class Postar extends HttpServlet {
         
         
     }
-  
+  private String getFileName(final Part part) {
+    final String partHeader = part.getHeader("content-disposition");
+    //LOGGER.log(Level.INFO, "Part Header = {0}", partHeader);
+    for (String content : part.getHeader("content-disposition").split(";")) {
+        if (content.trim().startsWith("filename")) {
+            return content.substring(
+                    content.indexOf('=') + 1).trim().replace("\"", "");
+        }
+    }
+    return null;
+}
     
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

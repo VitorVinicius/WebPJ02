@@ -5,23 +5,31 @@
  */
 package progweb.projeto;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 /**
  *
  * @author Aluno
  */
 @WebServlet(name = "Editar", urlPatterns = {"/Editar"})
+@MultipartConfig
 public class Editar extends HttpServlet {
 
     
@@ -40,6 +48,16 @@ public class Editar extends HttpServlet {
         //processRequest(request, response);
         
         response.setContentType("text/html;charset=UTF-8");
+        
+        
+        // Create path components to save the file
+        final String path = "C:\\arquivos";
+        final Part filePart = request.getPart("imagem");
+        final String fileName = getFileName(filePart);
+        
+        InputStream filecontent = null;
+         OutputStream outFile = null;
+        
         try (PrintWriter out = response.getWriter()) {
 
             /* TODO output your page here. You may use following sample code. */
@@ -60,16 +78,29 @@ public class Editar extends HttpServlet {
             // Registrado o driver, vamos estabelecer uma conexão  
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
                 try ( //Class.forName("com.mysql.jdbc.Driver");
-                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost/blog", "root", "utfpr")) {
+                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost/blog?useTimezone=true&serverTimezone=UTC", "root", "utfpr")) {
                     String consulta = "update postagem set titulo = ?, imagem = ?, texto = ? where idpostagem = ?";
                     //String consulta = "insert into postagem(titulo, imagem, texto) values ('21312', 'fwe', 'erw')";
                     PreparedStatement stmt = con.prepareStatement (consulta);
                     
                     
                     stmt.setString(1,request.getParameter("titulo"));
-                    stmt.setString(2,request.getParameter("imagem"));
+                    stmt.setString(2,"/download?file="+fileName);
                     stmt.setString(3,request.getParameter("texto"));
                     stmt.setString(4,request.getParameter("id"));
+                    
+                    
+                    outFile = new FileOutputStream(new File(path + File.separator
+                                + fileName));
+                        filecontent = filePart.getInputStream();
+
+                        int read = 0;
+                        final byte[] bytes = new byte[1024];
+
+                        while ((read = filecontent.read(bytes)) != -1) {
+                            outFile.write(bytes, 0, read);
+                        }
+                    
                     
                     int rs = stmt.executeUpdate();
                     
@@ -88,7 +119,27 @@ public class Editar extends HttpServlet {
             e.printStackTrace(); //vejamos que erro foi gerado e quem o gerou 
             
             out.println(e.getMessage());
-        }          
+        }
+            catch (FileNotFoundException fne) {
+        out.println("You either did not specify a file to upload or are "
+                + "trying to upload a file to a protected or nonexistent "
+                + "location.");
+        out.println("<br/> ERROR: " + fne.getMessage());
+
+        //LOGGER.log(Level.SEVERE, "Problems during file upload. Error: {0}", 
+          //      new Object[]{fne.getMessage()});
+    } finally {
+        if (outFile != null) {
+            outFile.close();
+        }
+        if (filecontent != null) {
+            filecontent.close();
+        }
+        if (out != null) {
+            out.close();
+        }
+    }
+            
             }
             
             
@@ -102,7 +153,17 @@ public class Editar extends HttpServlet {
         
         
     }
-
+ private String getFileName(final Part part) {
+    final String partHeader = part.getHeader("content-disposition");
+    //LOGGER.log(Level.INFO, "Part Header = {0}", partHeader);
+    for (String content : part.getHeader("content-disposition").split(";")) {
+        if (content.trim().startsWith("filename")) {
+            return content.substring(
+                    content.indexOf('=') + 1).trim().replace("\"", "");
+        }
+    }
+    return null;
+}
     @Override
     public String getServletInfo() {
         return "Short description";

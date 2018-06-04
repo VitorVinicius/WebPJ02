@@ -45,7 +45,7 @@ public class Blog {
             ArrayList<Postagem> postagens = new ArrayList();
         try {
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-             Connection con = DriverManager.getConnection("jdbc:mysql://localhost/blog", "root", "utfpr");
+             Connection con = DriverManager.getConnection("jdbc:mysql://localhost/blog?useTimezone=true&serverTimezone=UTC", "root", "utfpr");
                     String consulta = "select * from postagem where idpostagem = ?";
                     
                     
