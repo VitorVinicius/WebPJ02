@@ -9,6 +9,17 @@
 <%@page import="progweb.projeto.Blog"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
+
+<% 
+    Object logado =  request.getSession().getAttribute("logado");
+   
+    
+    
+
+
+%>
+
+
 <!DOCTYPE html>
 
 <html>
@@ -29,15 +40,18 @@
         <div class="img"></div>
         <div class="tamanho">
           <h1 class="label">Reflex</h1>
-          <label class="textoSup">Bem Vindo ao Blog <%=  (request.getSession().getAttribute("logado") == null ?"":request.getSession().getAttribute("nomeUsuario")+"!")%></label>
+          <label class="textoSup">Bem Vindo ao Blog <%=  (logado ==null?"":request.getSession().getAttribute("nomeUsuario")+"!")%></label>
           <form action="/index.jsp">
                <p><label for="nome">Pesquisar: </label>
                 <input type = "search" name = "busca" id ="busca"></p>
-                <p><input type="submit"  value = "Buscar"></p>
+                <input class="botaoGetStarted" type="submit"  value = "Buscar">
               
           </form>
           <div>
-            <input class="botaoGetStarted" type="button" value="GET STARTED" />
+              <%=  (logado ==null?"":"<a href=\"/postar.jsp\"  ><span class=\"botaoAcao\">POSTAR</span></a>")%>
+              <%=  (logado ==null?"<a href=\"/login.html\" ><span class=\"botaoAcao\">LOGIN</span></a>":"")%>
+              <%=  (logado ==null?"<a href=\"/cadastro.html\" ><span class=\"botaoAcao\">CADASTRO</span></a>":"")%>
+              
           </div>
         </div>
       </div>

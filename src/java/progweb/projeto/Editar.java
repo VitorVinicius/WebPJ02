@@ -59,7 +59,15 @@ public class Editar extends HttpServlet {
          OutputStream outFile = null;
         
         try (PrintWriter out = response.getWriter()) {
-
+            
+            Object logado =  request.getSession().getAttribute("logado");
+   
+            if(logado == null){
+                response.sendRedirect("login.html");
+               out.println("Faça login primeiro");
+               return;
+            }
+                
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");

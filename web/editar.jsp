@@ -10,7 +10,19 @@
 <%@page import="progweb.projeto.Blog"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<% Postagem postagem = Blog.getPostagem(Integer.parseInt(request.getParameter("id"))); %>
+<% 
+    Object logado =  request.getSession().getAttribute("logado");
+   
+    if(logado == null){
+        response.sendRedirect("login.html");
+       out.println("Faça login primeiro");
+       return;
+    }
+    
+    Postagem postagem = Blog.getPostagem(Integer.parseInt(request.getParameter("id"))); 
+
+
+%>
 
 
 
@@ -30,16 +42,7 @@
 			</div>
 		</div>
     
-      <div class="conteudoCab">
-        <div class="img"></div>
-        <div class="tamanho">
-          <h1 class="label">Reflex</h1>
-          <label class="textoSup">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed molestie quam neque, non aliquam quam tempor sed.</label>
-          <div>
-            <input class="botaoGetStarted" type="button" value="GET STARTED" />
-          </div>
-        </div>
-      </div>
+      
     </div>
       <hr/>
       <h1>Editar Postagem</h1>

@@ -62,14 +62,16 @@ public class Cadastro extends HttpServlet {
             // Registrado o driver, vamos estabelecer uma conexão  
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
                 try ( //Class.forName("com.mysql.jdbc.Driver");
-                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost/blog", "root", "utfpr")) {
-                    String consulta = "insert into login(nomeUsuario, nomeCompleto, senha) values (?, ?, ?)";
+                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost/blog?useTimezone=true&serverTimezone=UTC", "root", "utfpr")) {
+                    String consulta = "insert into login(nomeUsuario, nomeCompleto, senha, endereco) values (?, ?, ?,?)";
                     //String consulta = "insert into postagem(titulo, imagem, texto) values ('21312', 'fwe', 'erw')";
                     PreparedStatement stmt = con.prepareStatement (consulta);
 
                     stmt.setString(1,request.getParameter("nomeUsuario"));
                     stmt.setString(2,request.getParameter("nomeCompleto"));
                     stmt.setString(3,request.getParameter("senha"));
+                    stmt.setString(4,request.getParameter("endereco"));
+                    
 
                     int rs = stmt.executeUpdate();
 

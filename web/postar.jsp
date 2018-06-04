@@ -10,6 +10,16 @@
 <%@page import="progweb.projeto.Blog"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
+<% 
+    Object logado =  request.getSession().getAttribute("logado");
+   
+    if(logado == null){
+        response.sendRedirect("login.html");
+       out.println("Faça login primeiro");
+       return;
+    }
+%>
+
 <!DOCTYPE html>
 
 <html>
@@ -26,16 +36,6 @@
 			</div>
 		</div>
     
-      <div class="conteudoCab">
-        <div class="img"></div>
-        <div class="tamanho">
-          <h1 class="label">Reflex</h1>
-          <label class="textoSup">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed molestie quam neque, non aliquam quam tempor sed.</label>
-          <div>
-            <input class="botaoGetStarted" type="button" value="GET STARTED" />
-          </div>
-        </div>
-      </div>
     </div>
       <hr/>
       <form action ="./Postar" method="post" accept-charset="utf-8" enctype="multipart/form-data">

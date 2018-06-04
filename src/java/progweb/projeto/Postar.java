@@ -37,6 +37,8 @@ public class Postar extends HttpServlet {
             throws ServletException, IOException {
         //processRequest(request, response);
         
+        
+        
         response.setContentType("text/html;charset=UTF-8");
         
         // Create path components to save the file
@@ -47,7 +49,15 @@ public class Postar extends HttpServlet {
         InputStream filecontent = null;
          OutputStream outFile = null;
         try (PrintWriter out = response.getWriter()) {
-
+            
+            Object logado =  request.getSession().getAttribute("logado");
+   
+            if(logado == null){
+                response.sendRedirect("login.html");
+               out.println("Faça login primeiro");
+               return;
+            }
+            
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");

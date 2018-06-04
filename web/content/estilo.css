@@ -109,6 +109,22 @@ input{
   display: block;
 }
 
+.botaoAcao{
+  border: 1px solid rgb(77, 77, 77);
+  background-color: white;
+  padding: 10px;
+  border-radius: 25px;
+  color: rgb(77, 77, 77);
+  font-family: "raleway", Times, serif;
+  float: left;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 5px;
+  margin-right: 5px;
+    text-align: center
+}
+
+
 .textoInf {
   color: rgb(77, 77, 77);
   font-family: "raleway", Times, serif;
