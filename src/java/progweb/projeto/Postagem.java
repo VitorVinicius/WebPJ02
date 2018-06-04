@@ -35,14 +35,23 @@ public class Postagem {
         this.texto = texto;
     }
 
-    public Postagem(String titulo, String imagem, String texto, String video) {
+    public Postagem(String titulo, String imagem, String texto, String video, String nomeUsuario) {
         this.titulo = titulo;
         this.imagem = imagem;
         this.texto = texto;
         this.video = video;
+        this.nomeUsuario = nomeUsuario;
     }
 
-   
+   String nomeUsuario;
+
+    public String getNomeUsuario() {
+        return nomeUsuario;
+    }
+
+    public void setNomeUsuario(String nomeUsuario) {
+        this.nomeUsuario = nomeUsuario;
+    }
     String titulo;
     String imagem;
     String texto;

@@ -104,7 +104,7 @@ public class Postar extends HttpServlet {
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
                 try ( //Class.forName("com.mysql.jdbc.Driver");
                         Connection con = DriverManager.getConnection("jdbc:mysql://localhost/blog?useTimezone=true&serverTimezone=UTC", "root", "utfpr")) {
-                    String consulta = "insert into postagem(titulo, imagem, texto,video) values (?, ?, ?, ?)";
+                    String consulta = "insert into postagem(titulo, imagem, texto,video,nomeUsuario) values (?, ?, ?, ?,?)";
                     //String consulta = "insert into postagem(titulo, imagem, texto) values ('21312', 'fwe', 'erw')";
                     PreparedStatement stmt = con.prepareStatement (consulta);
                     
@@ -113,7 +113,7 @@ public class Postar extends HttpServlet {
                     stmt.setString(2,"/download?file="+imageFileName);
                     stmt.setString(3,request.getParameter("texto"));
                     stmt.setString(4,"/download?file="+videoFileName);
-                    
+                    stmt.setString(5,request.getSession().getAttribute("nomeUsuario").toString());
                     
                     imageOutFile = new FileOutputStream(new File(path + File.separator
                                 + imageFileName));

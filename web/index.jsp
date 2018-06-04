@@ -12,7 +12,7 @@
 
 <% 
     Object logado =  request.getSession().getAttribute("logado");
-   
+    Object nomeUsuario =  request.getSession().getAttribute("nomeUsuario");
     
     
 
@@ -49,6 +49,7 @@
           </form>
           <div>
               <%=  (logado ==null?"":"<a href=\"/postar.jsp\"  ><span class=\"botaoAcao\">POSTAR</span></a>")%>
+              <%=  (logado ==null?"":"<a href=\"/Logout\"  ><span class=\"botaoAcao\">SAIR</span></a>")%>
               <%=  (logado ==null?"<a href=\"/login.html\" ><span class=\"botaoAcao\">LOGIN</span></a>":"")%>
               <%=  (logado ==null?"<a href=\"/cadastro.html\" ><span class=\"botaoAcao\">CADASTRO</span></a>":"")%>
               
@@ -66,7 +67,15 @@
       <div class="conteudoCab">
           <div class="img"><img class="imgPost" src='<%=  post.getImagem()%>'/></div>
         <div class="tamanho">
-            <h1 class="label"><a href="./editar.jsp?id=<%=  post.getId()%>"><%=  post.getTitulo() %></a></h1>
+            <h1 class="label">
+                <%if ( nomeUsuario!= null && nomeUsuario.toString().equals(post.getNomeUsuario())){ %>
+                
+                     <a href="./editar.jsp?id=<%=  post.getId()%>"><%=  post.getTitulo() %></a>
+                
+                   <%}else{%>
+                     <%=  post.getTitulo() %>
+                   <%}%>
+            </h1>
           <label class="textoSup"><%=  post.getTexto()%></label>
           
           <%if ( post.getVideo() != null && !post.getVideo().isEmpty()){ %>

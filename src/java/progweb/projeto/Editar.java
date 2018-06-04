@@ -80,9 +80,28 @@ public class Editar extends HttpServlet {
             out.println("<body>");
             out.println("<h1>Resultado</h1>");
          
+            Boolean continuar =true;
+                    String titulo = request.getParameter("titulo");
+                    if(titulo == null || titulo.isEmpty()){
+                        out.println("O titulo é obrigatório.<br/>");
+                        continuar = false;
+                    }
+                    
+                    String imagem = request.getParameter("imagem") + "";
+                    if((imagem ).isEmpty()){
+                        out.println("A imagem é obrigatória.<br/>");
+                        continuar = false;
+                    }
+                    
+                    String texto = request.getParameter("texto");
+                    if(texto == null || texto.isEmpty()){
+                        out.println("O texto é obrigatório.<br/>");
+                        continuar = false;
+                    }
+            
             
             String method = request.getMethod().toLowerCase() ;
-            if (method.equals("post")){
+            if (method.equals("post") && continuar){
             try //A captura de exceções SQLException em Java é obrigatória para usarmos JDBC.   
         {
 
@@ -90,7 +109,7 @@ public class Editar extends HttpServlet {
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
                 try ( //Class.forName("com.mysql.jdbc.Driver");
                         Connection con = DriverManager.getConnection("jdbc:mysql://localhost/blog?useTimezone=true&serverTimezone=UTC", "root", "utfpr")) {
-                    String consulta = "update postagem set titulo = ?, imagem = ?,video = ?, texto = ? where idpostagem = ?";
+                    String consulta = "update postagem set titulo = ?, imagem = ?,video = ?, texto = ? where idpostagem = ? and nomeUsuario = ?";
                     //String consulta = "insert into postagem(titulo, imagem, texto) values ('21312', 'fwe', 'erw')";
                     PreparedStatement stmt = con.prepareStatement (consulta);
                     
@@ -100,7 +119,7 @@ public class Editar extends HttpServlet {
                     stmt.setString(3,"/download?file="+videoFileName);
                     stmt.setString(4,request.getParameter("texto"));
                     stmt.setString(5,request.getParameter("id"));
-                    
+                    stmt.setString(6,request.getSession().getAttribute("nomeUsuario").toString());
                     
                     outFile = new FileOutputStream(new File(path + File.separator
                                 + fileName));

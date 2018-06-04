@@ -36,7 +36,7 @@ public class Blog {
                     ResultSet rs = stmt.executeQuery();
                     
                     while(rs.next()){
-                        Postagem p = new Postagem(rs.getString("titulo"),rs.getString("imagem"),rs.getString("texto"),rs.getString("video"));
+                        Postagem p = new Postagem(rs.getString("titulo"),rs.getString("imagem"),rs.getString("texto"),rs.getString("video"),rs.getString("nomeUsuario"));
                         p.setId(rs.getInt("idpostagem"));
                         postagens.add(p);
                     }
@@ -63,7 +63,7 @@ public class Blog {
                     ResultSet rs = stmt.executeQuery();
                     
                     while(rs.next()){
-                        Postagem p = new Postagem(rs.getString("titulo"),rs.getString("imagem"),rs.getString("texto"),rs.getString("video"));
+                        Postagem p = new Postagem(rs.getString("titulo"),rs.getString("imagem"),rs.getString("texto"),rs.getString("video"),rs.getString("nomeUsuario"));
                         p.setId(rs.getInt("idpostagem"));
                         postagens.add(p);
                     }
