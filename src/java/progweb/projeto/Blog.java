@@ -19,13 +19,19 @@ import java.util.logging.Logger;
  * @author Aluno
  */
 public class Blog {
-    public static ArrayList<Postagem> getPostagens(){
+    public static ArrayList<Postagem> getPostagens(String busca){
             ArrayList<Postagem> postagens = new ArrayList();
         try {
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
              Connection con = DriverManager.getConnection("jdbc:mysql://localhost/blog?useTimezone=true&serverTimezone=UTC", "root", "utfpr");
-                    String consulta = "select * from postagem";
+                    
+                    String consulta = (busca== null || busca.equals(""))? "select * from postagem":"select * from postagem where titulo like ? or texto like ?";
                     PreparedStatement stmt = con.prepareStatement (consulta);
+                    
+                    if(busca!= null && !busca.equals("")){
+                        stmt.setString(1,"%"+busca+"%");
+                        stmt.setString(2,"%"+busca+"%");
+                    }
                     
                     ResultSet rs = stmt.executeQuery();
                     

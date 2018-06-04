@@ -30,6 +30,12 @@
         <div class="tamanho">
           <h1 class="label">Reflex</h1>
           <label class="textoSup">Bem Vindo ao Blog <%=  (request.getSession().getAttribute("logado") == null ?"":request.getSession().getAttribute("nomeUsuario")+"!")%></label>
+          <form action="/index.jsp">
+               <p><label for="nome">Pesquisar: </label>
+                <input type = "search" name = "busca" id ="busca"></p>
+                <p><input type="submit"  value = "Buscar"></p>
+              
+          </form>
           <div>
             <input class="botaoGetStarted" type="button" value="GET STARTED" />
           </div>
@@ -38,7 +44,7 @@
     </div>
       <hr/>
       
-      <% ArrayList<Postagem> postagens = Blog.getPostagens(); %>
+      <% ArrayList<Postagem> postagens = Blog.getPostagens(request.getParameter("busca")); %>
         <%for ( Postagem post : postagens){ %>
         
         <div class="post">
