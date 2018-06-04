@@ -61,6 +61,16 @@ input{
   margin-left: 15%;
 }
 
+.imgPost {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-position: center;
+  background-size: 175%;
+  background-repeat: no-repeat;
+  float: left;
+  margin-right: 50px;
+}
 .conteudo {
   width: 100%;
   background-color: rgb(240, 240, 240);
