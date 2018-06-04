@@ -62,7 +62,7 @@ public class Login extends HttpServlet {
             // Registrado o driver, vamos estabelecer uma conexão  
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
                 try ( //Class.forName("com.mysql.jdbc.Driver");
-                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost/blog", "root", "utfpr")) {
+                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost/blog?useTimezone=true&serverTimezone=UTC", "root", "utfpr")) {
                     String consulta = " select  * "
                             + "         from    login"
                             + "         where   nomeUsuario = ? AND"
@@ -70,21 +70,28 @@ public class Login extends HttpServlet {
                     //String consulta = "insert into login(nomeUsuario, nomeCompleto, senha) values (?, ?, ?)";
                     //String consulta = "insert into postagem(titulo, imagem, texto) values ('21312', 'fwe', 'erw')";
                     PreparedStatement stmt = con.prepareStatement (consulta);
-
-                    stmt.setString(1,request.getParameter("nomeUsuario"));
-                    stmt.setString(2,request.getParameter("senha"));
+                    String usuario = request.getParameter("nomeUsuario");
+                    String senha = request.getParameter("senha");
+                    stmt.setString(1,usuario);
+                    stmt.setString(2,senha);
 
                     ResultSet rs = stmt.executeQuery();
                     
                     while(rs.next()){
-                        
+                         out.println(rs.getString("nomeUsuario"));
                         if(request.getParameter("nomeUsuario").equals(rs.getString("nomeUsuario"))){
-                            out.println("TEM UM USUARIO COM ESSE NOME");
-                            break;
+                            //out.println("TEM UM USUARIO COM ESSE NOME");
+                            out.println("Logado com sucesso.");
+                            //estabelecer sessão aqui!!
+                            
+                             response.sendRedirect("index.jsp");//redireciona para a página principal
+                             return;
+                             //break;
                         }
                         
                     }
-                    out.println("FIM DO LAÇO");
+                    response.sendRedirect("login.html");
+                    out.println("Falha no login.");
                        }
 
         } catch (SQLException e) {
