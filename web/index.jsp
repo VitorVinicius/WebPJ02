@@ -68,9 +68,15 @@
         <div class="tamanho">
             <h1 class="label"><a href="./editar.jsp?id=<%=  post.getId()%>"><%=  post.getTitulo() %></a></h1>
           <label class="textoSup"><%=  post.getTexto()%></label>
+          
+          <%if ( post.getVideo() != null && !post.getVideo().isEmpty()){ %>
           <div>
-            <!--<input class="botaoGetStarted" type="button" value="GET STARTED" />-->
+            <video width="400" controls>
+            <source src="<%=  post.getVideo()%>" >
+            Your browser does not support HTML5 video.
+          </video>
           </div>
+            <%}%>
         </div>
       </div>
     </div>

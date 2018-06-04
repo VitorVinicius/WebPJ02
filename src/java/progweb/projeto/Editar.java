@@ -55,9 +55,12 @@ public class Editar extends HttpServlet {
         final Part filePart = request.getPart("imagem");
         final String fileName = getFileName(filePart);
         
+           final Part videoFilePart = request.getPart("video");
+        final String videoFileName = getFileName(videoFilePart);
+        
         InputStream filecontent = null;
          OutputStream outFile = null;
-        
+         OutputStream videoOutFile = null;
         try (PrintWriter out = response.getWriter()) {
             
             Object logado =  request.getSession().getAttribute("logado");
@@ -87,15 +90,16 @@ public class Editar extends HttpServlet {
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
                 try ( //Class.forName("com.mysql.jdbc.Driver");
                         Connection con = DriverManager.getConnection("jdbc:mysql://localhost/blog?useTimezone=true&serverTimezone=UTC", "root", "utfpr")) {
-                    String consulta = "update postagem set titulo = ?, imagem = ?, texto = ? where idpostagem = ?";
+                    String consulta = "update postagem set titulo = ?, imagem = ?,video = ?, texto = ? where idpostagem = ?";
                     //String consulta = "insert into postagem(titulo, imagem, texto) values ('21312', 'fwe', 'erw')";
                     PreparedStatement stmt = con.prepareStatement (consulta);
                     
                     
                     stmt.setString(1,request.getParameter("titulo"));
                     stmt.setString(2,"/download?file="+fileName);
-                    stmt.setString(3,request.getParameter("texto"));
-                    stmt.setString(4,request.getParameter("id"));
+                    stmt.setString(3,"/download?file="+videoFileName);
+                    stmt.setString(4,request.getParameter("texto"));
+                    stmt.setString(5,request.getParameter("id"));
                     
                     
                     outFile = new FileOutputStream(new File(path + File.separator
@@ -103,10 +107,22 @@ public class Editar extends HttpServlet {
                         filecontent = filePart.getInputStream();
 
                         int read = 0;
-                        final byte[] bytes = new byte[1024];
+                        byte[] bytes = new byte[1024];
 
                         while ((read = filecontent.read(bytes)) != -1) {
                             outFile.write(bytes, 0, read);
+                        }
+                        if(videoFileName!=null && videoFileName.isEmpty() == false){
+                                videoOutFile = new FileOutputStream(new File(path + File.separator
+                                    + videoFileName));
+                            filecontent = videoFilePart.getInputStream();
+
+                            read = 0;
+                            bytes = new byte[1024];
+
+                            while ((read = filecontent.read(bytes)) != -1) {
+                                videoOutFile.write(bytes, 0, read);
+                            }
                         }
                     
                     

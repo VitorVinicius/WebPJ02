@@ -43,11 +43,16 @@ public class Postar extends HttpServlet {
         
         // Create path components to save the file
         final String path = "C:\\arquivos";
-        final Part filePart = request.getPart("imagem");
-        final String fileName = getFileName(filePart);
+        
+        final Part videoFilePart = request.getPart("video");
+        final String videoFileName = getFileName(videoFilePart);
+        
+        final Part imageFilePart = request.getPart("imagem");
+        final String imageFileName = getFileName(imageFilePart);
         
         InputStream filecontent = null;
-         OutputStream outFile = null;
+         OutputStream imageOutFile = null;
+         OutputStream videoOutFile = null;
         try (PrintWriter out = response.getWriter()) {
             
             Object logado =  request.getSession().getAttribute("logado");
@@ -80,6 +85,7 @@ public class Postar extends HttpServlet {
                         out.println("A imagem é obrigatória.<br/>");
                         continuar = false;
                     }
+                    
                     String texto = request.getParameter("texto");
                     if(texto == null || texto.isEmpty()){
                         out.println("O texto é obrigatório.<br/>");
@@ -98,27 +104,40 @@ public class Postar extends HttpServlet {
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
                 try ( //Class.forName("com.mysql.jdbc.Driver");
                         Connection con = DriverManager.getConnection("jdbc:mysql://localhost/blog?useTimezone=true&serverTimezone=UTC", "root", "utfpr")) {
-                    String consulta = "insert into postagem(titulo, imagem, texto) values (?, ?, ?)";
+                    String consulta = "insert into postagem(titulo, imagem, texto,video) values (?, ?, ?, ?)";
                     //String consulta = "insert into postagem(titulo, imagem, texto) values ('21312', 'fwe', 'erw')";
                     PreparedStatement stmt = con.prepareStatement (consulta);
                     
                     
                     stmt.setString(1,request.getParameter("titulo"));
-                    stmt.setString(2,"/download?file="+fileName);
+                    stmt.setString(2,"/download?file="+imageFileName);
                     stmt.setString(3,request.getParameter("texto"));
+                    stmt.setString(4,"/download?file="+videoFileName);
                     
                     
-                    outFile = new FileOutputStream(new File(path + File.separator
-                                + fileName));
-                        filecontent = filePart.getInputStream();
+                    imageOutFile = new FileOutputStream(new File(path + File.separator
+                                + imageFileName));
+                        filecontent = imageFilePart.getInputStream();
 
                         int read = 0;
-                        final byte[] bytes = new byte[1024];
+                        byte[] bytes = new byte[1024];
 
                         while ((read = filecontent.read(bytes)) != -1) {
-                            outFile.write(bytes, 0, read);
+                            imageOutFile.write(bytes, 0, read);
                         }
                     
+                        if(videoFileName!=null && videoFileName.isEmpty() == false){
+                                videoOutFile = new FileOutputStream(new File(path + File.separator
+                                    + videoFileName));
+                            filecontent = videoFilePart.getInputStream();
+
+                            read = 0;
+                            bytes = new byte[1024];
+
+                            while ((read = filecontent.read(bytes)) != -1) {
+                                videoOutFile.write(bytes, 0, read);
+                            }
+                        }
                     
                     int rs = stmt.executeUpdate();
                     
@@ -150,8 +169,8 @@ public class Postar extends HttpServlet {
         //LOGGER.log(Level.SEVERE, "Problems during file upload. Error: {0}", 
           //      new Object[]{fne.getMessage()});
     } finally {
-        if (outFile != null) {
-            outFile.close();
+        if (imageOutFile != null) {
+            imageOutFile.close();
         }
         if (filecontent != null) {
             filecontent.close();
