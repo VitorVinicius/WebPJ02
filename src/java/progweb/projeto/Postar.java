@@ -68,8 +68,29 @@ public class Postar extends HttpServlet {
             out.println("<h1>Resultado</h1>");
          
             
+            Boolean continuar =true;
+                    String titulo = request.getParameter("titulo");
+                    if(titulo == null || titulo.isEmpty()){
+                        out.println("O titulo é obrigatório.<br/>");
+                        continuar = false;
+                    }
+                    
+                    String imagem = request.getParameter("imagem") + "";
+                    if((imagem ).isEmpty()){
+                        out.println("A imagem é obrigatória.<br/>");
+                        continuar = false;
+                    }
+                    String texto = request.getParameter("texto");
+                    if(texto == null || texto.isEmpty()){
+                        out.println("O texto é obrigatório.<br/>");
+                        continuar = false;
+                    }
+                   
+                
+            
+            
             String method = request.getMethod().toLowerCase() ;
-            if (method.equals("post")){
+            if (method.equals("post") && continuar){
             try //A captura de exceções SQLException em Java é obrigatória para usarmos JDBC.   
         {
 

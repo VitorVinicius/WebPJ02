@@ -59,18 +59,48 @@ public class Cadastro extends HttpServlet {
             try //A captura de exceções SQLException em Java é obrigatória para usarmos JDBC.   
         {
 
+                    Boolean continuar =true;
+                    String nomeUsuario = request.getParameter("nomeUsuario");
+                    if(nomeUsuario == null || nomeUsuario.isEmpty()){
+                        out.println("O nome do usuário é obrigatório.<br/>");
+                        continuar = false;
+                    }
+                    
+                    String nomeCompleto = request.getParameter("nomeCompleto");
+                    if(nomeCompleto == null || nomeCompleto.isEmpty()){
+                        out.println("O nome completo do usuário é obrigatório.<br/>");
+                        continuar = false;
+                    }
+                    String senha = request.getParameter("senha");
+                    if(senha == null || senha.isEmpty()){
+                        out.println("A senha é obrigatória.<br/>");
+                        continuar = false;
+                    }
+                    String endereco = request.getParameter("endereco");
+                    if(endereco == null || endereco.isEmpty()){
+                        out.println("O endereço é obrigatório.<br/>");
+                        continuar = false;
+                    }
+                
             // Registrado o driver, vamos estabelecer uma conexão  
-            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+            
+            if(continuar){
+            
+                 DriverManager.registerDriver(new com.mysql.jdbc.Driver());
                 try ( //Class.forName("com.mysql.jdbc.Driver");
-                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost/blog?useTimezone=true&serverTimezone=UTC", "root", "utfpr")) {
+                     Connection con = DriverManager.getConnection("jdbc:mysql://localhost/blog?useTimezone=true&serverTimezone=UTC", "root", "utfpr")) {
+                    
+                    
+                    
+                   
                     String consulta = "insert into login(nomeUsuario, nomeCompleto, senha, endereco) values (?, ?, ?,?)";
                     //String consulta = "insert into postagem(titulo, imagem, texto) values ('21312', 'fwe', 'erw')";
                     PreparedStatement stmt = con.prepareStatement (consulta);
 
-                    stmt.setString(1,request.getParameter("nomeUsuario"));
-                    stmt.setString(2,request.getParameter("nomeCompleto"));
-                    stmt.setString(3,request.getParameter("senha"));
-                    stmt.setString(4,request.getParameter("endereco"));
+                    stmt.setString(1,nomeUsuario);
+                    stmt.setString(2,nomeCompleto);
+                    stmt.setString(3,senha);
+                    stmt.setString(4,endereco);
                     
 
                     int rs = stmt.executeUpdate();
@@ -83,8 +113,15 @@ public class Cadastro extends HttpServlet {
                     {
                         out.println("Erro!");
                     }   }
+            
+            }
+           
 
-        } catch (SQLException e) {
+        } 
+            catch(java.sql.SQLIntegrityConstraintViolationException ex){
+                out.println("Já existe um nome de usuário '"+request.getParameter("nomeUsuario")+"' cadastrado ");
+            }
+            catch (SQLException e) {
             // se houve algum erro, uma exceção é gerada para informar o erro   
             e.printStackTrace(); //vejamos que erro foi gerado e quem o gerou 
             
