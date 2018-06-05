@@ -88,7 +88,7 @@ public class Cadastro extends HttpServlet {
             
                  DriverManager.registerDriver(new com.mysql.jdbc.Driver());
                 try ( //Class.forName("com.mysql.jdbc.Driver");
-                     Connection con = DriverManager.getConnection("jdbc:mysql://localhost/blog?useTimezone=true&serverTimezone=UTC", "root", "utfpr")) {
+                     Connection con = DriverManager.getConnection("jdbc:mysql://db4free.net/blogwebprj?useTimezone=true&serverTimezone=UTC", "blogwebprj", "blogwebprj")) {
                     
                     
                     
@@ -108,6 +108,8 @@ public class Cadastro extends HttpServlet {
 
                     if (rs > 0){
                         out.println(request.getParameter("nomeCompleto") + " Inserido com sucesso!");
+                        response.sendRedirect("index.jsp");//redireciona para a página principal
+                             
                     }
                     else
                     {

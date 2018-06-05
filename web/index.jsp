@@ -41,17 +41,17 @@
         <div class="tamanho">
           <h1 class="label">Reflex</h1>
           <label class="textoSup">Bem Vindo ao Blog <%=  (logado ==null?"":request.getSession().getAttribute("nomeUsuario")+"!")%></label>
-          <form action="/index.jsp">
+          <form action="index.jsp">
                <p><label for="nome">Pesquisar: </label>
                 <input type = "search" name = "busca" id ="busca"></p>
                 <input class="botaoGetStarted" type="submit"  value = "Buscar">
               
           </form>
           <div>
-              <%=  (logado ==null?"":"<a href=\"/postar.jsp\"  ><span class=\"botaoAcao\">POSTAR</span></a>")%>
-              <%=  (logado ==null?"":"<a href=\"/Logout\"  ><span class=\"botaoAcao\">SAIR</span></a>")%>
-              <%=  (logado ==null?"<a href=\"/login.html\" ><span class=\"botaoAcao\">LOGIN</span></a>":"")%>
-              <%=  (logado ==null?"<a href=\"/cadastro.html\" ><span class=\"botaoAcao\">CADASTRO</span></a>":"")%>
+              <%=  (logado ==null?"":"<a href=\"postar.jsp\"  ><span class=\"botaoAcao\">POSTAR</span></a>")%>
+              <%=  (logado ==null?"":"<a href=\"Logout\"  ><span class=\"botaoAcao\">SAIR</span></a>")%>
+              <%=  (logado ==null?"<a href=\"login.html\" ><span class=\"botaoAcao\">LOGIN</span></a>":"")%>
+              <%=  (logado ==null?"<a href=\"cadastro.html\" ><span class=\"botaoAcao\">CADASTRO</span></a>":"")%>
               
           </div>
         </div>

@@ -51,7 +51,7 @@ public class Editar extends HttpServlet {
         
         
         // Create path components to save the file
-        final String path = "C:\\arquivos";
+        final String path = "D:\\home\\site\\wwwroot\\bin\\apache-tomcat-8.5.24\\webapps\\PRJ02";
         final Part filePart = request.getPart("imagem");
         final String fileName = getFileName(filePart);
         
@@ -108,15 +108,15 @@ public class Editar extends HttpServlet {
             // Registrado o driver, vamos estabelecer uma conexão  
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
                 try ( //Class.forName("com.mysql.jdbc.Driver");
-                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost/blog?useTimezone=true&serverTimezone=UTC", "root", "utfpr")) {
+                        Connection con = DriverManager.getConnection("jdbc:mysql://db4free.net/blogwebprj?useTimezone=true&serverTimezone=UTC", "blogwebprj", "blogwebprj")) {
                     String consulta = "update postagem set titulo = ?, imagem = ?,video = ?, texto = ? where idpostagem = ? and nomeUsuario = ?";
                     //String consulta = "insert into postagem(titulo, imagem, texto) values ('21312', 'fwe', 'erw')";
                     PreparedStatement stmt = con.prepareStatement (consulta);
                     
                     
                     stmt.setString(1,request.getParameter("titulo"));
-                    stmt.setString(2,"/download?file="+fileName);
-                    stmt.setString(3,"/download?file="+videoFileName);
+                    stmt.setString(2,fileName);
+                    stmt.setString(3,videoFileName);
                     stmt.setString(4,request.getParameter("texto"));
                     stmt.setString(5,request.getParameter("id"));
                     stmt.setString(6,request.getSession().getAttribute("nomeUsuario").toString());

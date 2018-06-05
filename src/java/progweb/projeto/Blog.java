@@ -23,7 +23,7 @@ public class Blog {
             ArrayList<Postagem> postagens = new ArrayList();
         try {
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-             Connection con = DriverManager.getConnection("jdbc:mysql://localhost/blog?useTimezone=true&serverTimezone=UTC", "root", "utfpr");
+             Connection con = DriverManager.getConnection("jdbc:mysql://db4free.net/blogwebprj?useTimezone=true&serverTimezone=UTC", "blogwebprj", "blogwebprj");
                     
                     String consulta = (busca== null || busca.equals(""))? "select * from postagem":"select * from postagem where titulo like ? or texto like ?";
                     PreparedStatement stmt = con.prepareStatement (consulta);
@@ -51,7 +51,7 @@ public class Blog {
             ArrayList<Postagem> postagens = new ArrayList();
         try {
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-             Connection con = DriverManager.getConnection("jdbc:mysql://localhost/blog?useTimezone=true&serverTimezone=UTC", "root", "utfpr");
+             Connection con = DriverManager.getConnection("jdbc:mysql://db4free.net/blogwebprj?useTimezone=true&serverTimezone=UTC", "blogwebprj", "blogwebprj");
                     String consulta = "select * from postagem where idpostagem = ?";
                     
                     
