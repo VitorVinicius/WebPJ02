@@ -35,13 +35,18 @@ public class Postagem {
         this.texto = texto;
     }
 
-    public Postagem(String titulo, String imagem, String texto, String video, String nomeUsuario) {
+    public Postagem(String nomeUsuario, String titulo, String imagem, String texto, String video, long curtidas, long timestamp) {
+        this.nomeUsuario = nomeUsuario;
         this.titulo = titulo;
         this.imagem = imagem;
         this.texto = texto;
         this.video = video;
-        this.nomeUsuario = nomeUsuario;
+        this.curtidas = curtidas;
+        this.timestamp = timestamp;
+        this.id = id;
     }
+
+    
 
    String nomeUsuario;
 
@@ -56,6 +61,26 @@ public class Postagem {
     String imagem;
     String texto;
     String video;
+    
+    long curtidas;
+
+    public long getCurtidas() {
+        return curtidas;
+    }
+
+    public void setCurtidas(long curtidas) {
+        this.curtidas = curtidas;
+    }
+    
+    long timestamp; 
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
 
     public String getVideo() {
         return video;
