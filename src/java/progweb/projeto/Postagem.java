@@ -5,6 +5,8 @@
  */
 package progweb.projeto;
 
+import java.sql.Timestamp;
+
 /**
  *
  * @author Aluno
@@ -35,7 +37,7 @@ public class Postagem {
         this.texto = texto;
     }
 
-    public Postagem(String nomeUsuario, String titulo, String imagem, String texto, String video, long curtidas, long timestamp) {
+    public Postagem(String titulo, String imagem, String texto, String video,String nomeUsuario, long curtidas, Timestamp timestamp) {
         this.nomeUsuario = nomeUsuario;
         this.titulo = titulo;
         this.imagem = imagem;
@@ -43,7 +45,6 @@ public class Postagem {
         this.video = video;
         this.curtidas = curtidas;
         this.timestamp = timestamp;
-        this.id = id;
     }
 
     
@@ -72,13 +73,13 @@ public class Postagem {
         this.curtidas = curtidas;
     }
     
-    long timestamp; 
+    Timestamp timestamp; 
 
-    public long getTimestamp() {
+    public Timestamp getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(long timestamp) {
+    public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
 

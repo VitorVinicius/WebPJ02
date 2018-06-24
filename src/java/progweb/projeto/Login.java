@@ -62,7 +62,7 @@ public class Login extends HttpServlet {
             // Registrado o driver, vamos estabelecer uma conexão  
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
                 try ( //Class.forName("com.mysql.jdbc.Driver");
-                    Connection con = DriverManager.getConnection("jdbc:mysql://db4free.net/blogwebprj?useTimezone=true&serverTimezone=UTC", "blogwebprj", "blogwebprj")) {
+                    Connection con = DriverManager.getConnection("jdbc:mysql://db4free.net/blogwebprj?useTimezone=true&serverTimezone=UTC&useSSL=false", "blogwebprj", "blogwebprj")) {
                     String consulta = " select  * "
                             + "         from    login"
                             + "         where   nomeUsuario = ? AND"

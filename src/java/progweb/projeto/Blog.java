@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,11 +20,43 @@ import java.util.logging.Logger;
  * @author Aluno
  */
 public class Blog {
+    
+    
+     public static ArrayList<Postagem> getPostagens(Timestamp timestamp){
+            ArrayList<Postagem> postagens = new ArrayList();
+        try {
+            
+            
+            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+             Connection con = DriverManager.getConnection("jdbc:mysql://db4free.net/blogwebprj?useTimezone=true&serverTimezone=UTC&useSSL=false", "blogwebprj", "blogwebprj");
+                    
+                    String consulta = "select * from postagem where timestamp >= ?";
+                    PreparedStatement stmt = con.prepareStatement (consulta);
+                    
+                    stmt.setTimestamp(1,timestamp);
+                    
+                    ResultSet rs = stmt.executeQuery();
+                    
+                    while(rs.next()){
+                        Postagem p = new Postagem(rs.getString("titulo"),rs.getString("imagem"),rs.getString("texto"),rs.getString("video"),rs.getString("nomeUsuario"),rs.getLong("curtidas"),rs.getTimestamp("timestamp") );
+                        p.setId(rs.getInt("idpostagem"));
+                        postagens.add(p);
+                    }
+                    
+        } catch (SQLException ex) {
+            Logger.getLogger(Blog.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return postagens;
+    }
+    
+    
+    
     public static ArrayList<Postagem> getPostagens(String busca){
             ArrayList<Postagem> postagens = new ArrayList();
         try {
-            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-             Connection con = DriverManager.getConnection("jdbc:mysql://db4free.net/blogwebprj?useTimezone=true&serverTimezone=UTC", "blogwebprj", "blogwebprj");
+            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+             Connection con = DriverManager.getConnection("jdbc:mysql://db4free.net/blogwebprj?useTimezone=true&serverTimezone=UTC&useSSL=false", "blogwebprj", "blogwebprj");
                     
                     String consulta = (busca== null || busca.equals(""))? "select * from postagem":"select * from postagem where titulo like ? or texto like ?";
                     PreparedStatement stmt = con.prepareStatement (consulta);
@@ -36,7 +69,7 @@ public class Blog {
                     ResultSet rs = stmt.executeQuery();
                     
                     while(rs.next()){
-                        Postagem p = new Postagem(rs.getString("titulo"),rs.getString("imagem"),rs.getString("texto"),rs.getString("video"),rs.getString("nomeUsuario"),rs.getLong("curtidas"),rs.getLong("timestamp") );
+                        Postagem p = new Postagem(rs.getString("titulo"),rs.getString("imagem"),rs.getString("texto"),rs.getString("video"),rs.getString("nomeUsuario"),rs.getLong("curtidas"),rs.getTimestamp("timestamp") );
                         p.setId(rs.getInt("idpostagem"));
                         postagens.add(p);
                     }
@@ -51,7 +84,8 @@ public class Blog {
             ArrayList<Postagem> postagens = new ArrayList();
         try {
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-             Connection con = DriverManager.getConnection("jdbc:mysql://db4free.net/blogwebprj?useTimezone=true&serverTimezone=UTC", "blogwebprj", "blogwebprj");
+            
+             Connection con = DriverManager.getConnection("jdbc:mysql://db4free.net/blogwebprj?useTimezone=true&serverTimezone=UTC&useSSL=false", "blogwebprj", "blogwebprj");
                     String consulta = "select * from postagem where idpostagem = ?";
                     
                     
@@ -63,7 +97,7 @@ public class Blog {
                     ResultSet rs = stmt.executeQuery();
                     
                     while(rs.next()){
-                        Postagem p = new Postagem(rs.getString("titulo"),rs.getString("imagem"),rs.getString("texto"),rs.getString("video"),rs.getString("nomeUsuario"),rs.getLong("curtidas"),rs.getLong("timestamp"));
+                        Postagem p = new Postagem(rs.getString("titulo"),rs.getString("imagem"),rs.getString("texto"),rs.getString("video"),rs.getString("nomeUsuario"),rs.getLong("curtidas"),rs.getTimestamp("timestamp"));
                         p.setId(rs.getInt("idpostagem"));
                         postagens.add(p);
                     }

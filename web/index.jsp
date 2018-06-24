@@ -26,10 +26,13 @@
 
   <head>
         <link rel="stylesheet" href="content/estilo.css" type="text/css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://rawgithub.com/janl/mustache.js/master/mustache.js"></script>
+        
         <title>Web2</title>
   </head>
 
-  <body>
+  <body onload="carregarPosts()">
       <div class="cabecalho">
       <div class="cabecalhoHeader">
 			<div class="headerMenuButton">
@@ -58,41 +61,70 @@
       </div>
     </div>
       <hr/>
-      
-      <% ArrayList<Postagem> postagens = Blog.getPostagens(request.getParameter("busca")); %>
-        <%for ( Postagem post : postagens){ %>
-        
-        <div class="post">
-     
-      <div class="conteudoCab">
-          <div class="img"><img class="imgPost" src='<%=  post.getImagem()%>'/></div>
-        <div class="tamanho">
-            <h1 class="label">
-                <%if ( nomeUsuario!= null && nomeUsuario.toString().equals(post.getNomeUsuario())){ %>
-                
-                     <a href="./editar.jsp?id=<%=  post.getId()%>"><%=  post.getTitulo() %></a>
-                
-                   <%}else{%>
-                     <%=  post.getTitulo() %>
-                   <%}%>
-            </h1>
-          <label class="textoSup"><%=  post.getTexto()%></label>
+      <div id="content">
           
-          <%if ( post.getVideo() != null && !post.getVideo().isEmpty()){ %>
-          <div>
-            <video width="400" controls>
-            <source src="<%=  post.getVideo()%>" >
-            Your browser does not support HTML5 video.
-          </video>
-          </div>
-            <%}%>
-        </div>
+          
+          
+          
+          
+          
       </div>
-    </div>
+      
+      <script type="text/javascript">
+          
+          var currentTimestamp= "";
+          
+          function carregarPosts(){
+              
+              $("#content").addClass("loader");
+              $.get( "API/Posts", function( data ) {
+                
+                var d = new Date(); 
+               currentTimestamp = d.toLocaleString(); 
+                
+                $("#content").removeClass("loader");
+                
+                //var data = {"postagens":[{"nomeUsuario":"vitor.v.gomes@live.com","titulo":"Teste","imagem":"20180315_210143.jpg","texto":"Um texto qualquer aqui","video":"mov_bbb.mp4","curtidas":0,"timestamp":"Jun 24, 2018 2:46:40 PM","id":2},{"nomeUsuario":"vitor.v.gomes@live.com","titulo":"Teste 2","imagem":"Tulips.jpg","texto":"Coala","video":"","curtidas":0,"timestamp":"Jun 24, 2018 2:46:40 PM","id":3},{"nomeUsuario":"Felipe","titulo":"nome 3","imagem":"Penguins.jpg","texto":"nome","video":"","curtidas":0,"timestamp":"Jun 24, 2018 2:46:40 PM","id":4},{"nomeUsuario":"w","titulo":"w","imagem":"509.png","texto":"w","video":"","curtidas":0,"timestamp":"Jun 24, 2018 2:46:40 PM","id":5}]};
+
+                var template = '<div>{{#postagens}}<div class=\"post\"><div class=\"conteudoCab\"><div class=\"img\"><img class=\"imgPost\" src=\'{{imagem}}\'\/><\/div><div class=\"tamanho\"><h1 class=\"label\">{{titulo}}<\/h1><label class=\"textoSup\">{{texto}}<\/label><p>Curtidas: {{curtidas}}<\/p><a class="btnCurtir" id=\"aCurtir\" onclick=\"curtir({{id}})\">Curtir<\/a><\/div><\/div><\/div>{{/postagens}}</div>';
+
+                var result = Mustache.render(template, data);
+
+                document.getElementById('content').innerHTML = result;
+                
+              });
+              
+              
+          }
+          
+          
+          function carregarNovosPosts(){
+              
+              $.get( "API/Posts?timestampDe="+currentTimestamp , function( data ) {
+                
+               
+                
+                //var data = {"postagens":[{"nomeUsuario":"vitor.v.gomes@live.com","titulo":"Teste","imagem":"20180315_210143.jpg","texto":"Um texto qualquer aqui","video":"mov_bbb.mp4","curtidas":0,"timestamp":"Jun 24, 2018 2:46:40 PM","id":2},{"nomeUsuario":"vitor.v.gomes@live.com","titulo":"Teste 2","imagem":"Tulips.jpg","texto":"Coala","video":"","curtidas":0,"timestamp":"Jun 24, 2018 2:46:40 PM","id":3},{"nomeUsuario":"Felipe","titulo":"nome 3","imagem":"Penguins.jpg","texto":"nome","video":"","curtidas":0,"timestamp":"Jun 24, 2018 2:46:40 PM","id":4},{"nomeUsuario":"w","titulo":"w","imagem":"509.png","texto":"w","video":"","curtidas":0,"timestamp":"Jun 24, 2018 2:46:40 PM","id":5}]};
+                if(data.postagens.length>0){
+                    var template = '<div>{{#postagens}}<div class=\"post\"><div class=\"conteudoCab\"><div class=\"img\"><img class=\"imgPost\" src=\'{{imagem}}\'\/><\/div><div class=\"tamanho\"><h1 class=\"label\">{{titulo}}<\/h1><label class=\"textoSup\">{{texto}}<\/label><p>Curtidas: {{curtidas}}<\/p><a class="btnCurtir" id=\"aCurtir\" onclick=\"curtir({{id}})\">Curtir<\/a><\/div><\/div><\/div>{{/postagens}}</div>';
+
+                    var result = Mustache.render(template, data);
+                    var cont = document.getElementById('content');
+                    cont.innerHTML = result + cont.innerHTML;
+                    var d = new Date(); 
+                    currentTimestamp = d.toLocaleString(); 
+                }
+                 
+                
+              });
+              
+              
+          }
+          
+          
+          
+      </script>
         
-      <%}%>
-      
-      
   <hr/>
     <div class="conteudo">
       <div class="textoInf">

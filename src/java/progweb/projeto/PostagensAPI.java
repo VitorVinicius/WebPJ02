@@ -8,8 +8,15 @@ package progweb.projeto;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,12 +36,34 @@ public class PostagensAPI extends HttpServlet {
             throws ServletException, IOException {
         
         String timestampDe = request.getParameter("timestampDe");
-        String timestampAte = request.getParameter("timestampAte");
+        //String timestampAte = request.getParameter("timestampAte");
         
         
         String busca = request.getParameter("busca");
-        
-        ArrayList<Postagem> postagens =  Blog.getPostagens(busca);
+        ArrayList<Postagem> posts = new ArrayList<Postagem>();
+        Postagens postagens = new Postagens();
+        postagens.setPostagens(posts);
+        if(busca != null || timestampDe == null){
+            posts.addAll(Blog.getPostagens(busca));
+        }
+        else 
+            if(timestampDe!= null){
+               
+                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                Date date;
+            try {
+                date = new Date( dateFormat.parse(timestampDe).getTime());
+                
+                long time = date.getTime();
+                Timestamp timestamp = new Timestamp(time);
+                posts.addAll(Blog.getPostagens(timestamp));
+                postagens.setTimestamp(timestamp); 
+                
+            } catch (ParseException ex) {
+                Logger.getLogger(PostagensAPI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                
+        }
         
         //Postagem postagem =  new Postagem("titulo","imagem","texto","video","nomeUsuario",123,456);
         

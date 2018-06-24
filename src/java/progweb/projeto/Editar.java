@@ -108,7 +108,7 @@ public class Editar extends HttpServlet {
             // Registrado o driver, vamos estabelecer uma conexão  
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
                 try ( //Class.forName("com.mysql.jdbc.Driver");
-                        Connection con = DriverManager.getConnection("jdbc:mysql://db4free.net/blogwebprj?useTimezone=true&serverTimezone=UTC", "blogwebprj", "blogwebprj")) {
+                        Connection con = DriverManager.getConnection("jdbc:mysql://db4free.net/blogwebprj?useTimezone=true&serverTimezone=UTC&useSSL=false", "blogwebprj", "blogwebprj")) {
                     String consulta = "update postagem set titulo = ?, imagem = ?,video = ?, texto = ? where idpostagem = ? and nomeUsuario = ?";
                     //String consulta = "insert into postagem(titulo, imagem, texto) values ('21312', 'fwe', 'erw')";
                     PreparedStatement stmt = con.prepareStatement (consulta);

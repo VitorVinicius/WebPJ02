@@ -13,13 +13,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.annotation.MultipartConfig;
@@ -42,7 +47,7 @@ public class Postar extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         
         // Create path components to save the file
-        final String path = "D:\\home\\site\\wwwroot\\bin\\apache-tomcat-8.5.24\\webapps\\PRJ02";
+        final String path = "c:\\arquivos";// "D:\\home\\site\\wwwroot\\bin\\apache-tomcat-8.5.24\\webapps\\PRJ02";
         
         final Part videoFilePart = request.getPart("video");
         final String videoFileName = getFileName(videoFilePart);
@@ -103,8 +108,8 @@ public class Postar extends HttpServlet {
             // Registrado o driver, vamos estabelecer uma conexão  
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
                 try ( //Class.forName("com.mysql.jdbc.Driver");
-                        Connection con = DriverManager.getConnection("jdbc:mysql://db4free.net/blogwebprj?useTimezone=true&serverTimezone=UTC", "blogwebprj", "blogwebprj")) {
-                    String consulta = "insert into postagem(titulo, imagem, texto,video,nomeUsuario) values (?, ?, ?, ?,?)";
+                        Connection con = DriverManager.getConnection("jdbc:mysql://db4free.net/blogwebprj?useTimezone=true&serverTimezone=UTC&useSSL=false", "blogwebprj", "blogwebprj")) {
+                    String consulta = "insert into postagem(titulo, imagem, texto,video,nomeUsuario, timestamp) values (?, ?, ?, ?,?,?)";
                     //String consulta = "insert into postagem(titulo, imagem, texto) values ('21312', 'fwe', 'erw')";
                     PreparedStatement stmt = con.prepareStatement (consulta);
                     
@@ -114,6 +119,11 @@ public class Postar extends HttpServlet {
                     stmt.setString(3,request.getParameter("texto"));
                     stmt.setString(4,videoFileName);
                     stmt.setString(5,request.getSession().getAttribute("nomeUsuario").toString());
+                    
+                    
+                    long time = new Date().getTime();
+                    Timestamp timestamp = new Timestamp(time);
+                    stmt.setTimestamp(6, timestamp);
                     
                     imageOutFile = new FileOutputStream(new File(path + File.separator
                                 + imageFileName));
