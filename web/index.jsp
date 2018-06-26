@@ -86,11 +86,15 @@
                 
                 //var data = {"postagens":[{"nomeUsuario":"vitor.v.gomes@live.com","titulo":"Teste","imagem":"20180315_210143.jpg","texto":"Um texto qualquer aqui","video":"mov_bbb.mp4","curtidas":0,"timestamp":"Jun 24, 2018 2:46:40 PM","id":2},{"nomeUsuario":"vitor.v.gomes@live.com","titulo":"Teste 2","imagem":"Tulips.jpg","texto":"Coala","video":"","curtidas":0,"timestamp":"Jun 24, 2018 2:46:40 PM","id":3},{"nomeUsuario":"Felipe","titulo":"nome 3","imagem":"Penguins.jpg","texto":"nome","video":"","curtidas":0,"timestamp":"Jun 24, 2018 2:46:40 PM","id":4},{"nomeUsuario":"w","titulo":"w","imagem":"509.png","texto":"w","video":"","curtidas":0,"timestamp":"Jun 24, 2018 2:46:40 PM","id":5}]};
 
-                var template = '<div>{{#postagens}}<div class=\"post\"><div class=\"conteudoCab\"><div class=\"img\"><img class=\"imgPost\" src=\'{{imagem}}\'\/><\/div><div class=\"tamanho\"><h1 class=\"label\">{{titulo}}<\/h1><label class=\"textoSup\">{{texto}}<\/label><p>Curtidas: {{curtidas}}<\/p><a class="btnCurtir" id=\"aCurtir\" onclick=\"curtir({{id}})\">Curtir<\/a><\/div><\/div><\/div>{{/postagens}}</div>';
+                var template = '<div>{{#postagens}}<div class=\"post\"><div class=\"conteudoCab\"><div class=\"img\"><img class=\"imgPost\" src=\'{{imagem}}\'\/><\/div><div class=\"tamanho\"><h1 class=\"label\">{{titulo}}<\/h1><label class=\"textoSup\">{{texto}}<\/label><p>Curtidas: <label id=\"curtidasPost{{id}}\">{{curtidas}}</label><\/p><a class="btnCurtir" id=\"aCurtir\" onclick=\"curtir({{id}})\">Curtir<\/a><\/div><\/div><\/div>{{/postagens}}</div>';
 
                 var result = Mustache.render(template, data);
 
                 document.getElementById('content').innerHTML = result;
+                
+                
+                setInterval(carregarNovosPosts, 3000);
+                
                 
               });
               
@@ -121,6 +125,20 @@
               
           }
           
+          
+          function curtir(idPostagem){
+                var actionUrl = '/echo/json/';//alterar para a url da API do servidor
+                
+                $.post(actionUrl, {idPostagem: idPostagem}
+                    , function(data, textStatus, jqXHR) {
+
+                        var receivedData =  {idPostagem: idPostagem, curtidas: 2};//data; //decomentar para usar a resposta do servidor
+
+                        if(textStatus == 'success'){
+                                $('#curtidasPost'+idPostagem).html(receivedData.curtidas);
+                        }
+                    });
+}
           
           
       </script>
