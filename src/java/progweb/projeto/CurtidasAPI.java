@@ -6,15 +6,7 @@
 package progweb.projeto;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -25,7 +17,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 
 /**
  *
@@ -64,14 +55,12 @@ public class CurtidasAPI extends HttpServlet {
             throws ServletException, IOException {
         //processRequest(request, response);
         
-        response.setContentType("text/html;charset=UTF-8");
-        
         
         try //A captura de exceções SQLException em Java é obrigatória para usarmos JDBC.   
         {
 
             // Registrado o driver, vamos estabelecer uma conexão  
-            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
                 try ( //Class.forName("com.mysql.jdbc.Driver");
                         Connection con = DriverManager.getConnection("jdbc:mysql://db4free.net/blogwebprj?useTimezone=true&serverTimezone=UTC&useSSL=false", "blogwebprj", "blogwebprj")) 
                 {
@@ -79,15 +68,6 @@ public class CurtidasAPI extends HttpServlet {
                     //String consulta = "insert into postagem(titulo, imagem, texto) values ('21312', 'fwe', 'erw')";
                     PreparedStatement stmt = con.prepareStatement (consulta);
                     
-                    
-                    
-                    StringBuilder buffer = new StringBuilder();
-                    BufferedReader reader = request.getReader();
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        buffer.append(line);
-                    }
-                    String data = buffer.toString();
                     
                     int idPostagem = Integer.parseInt(request.getParameter("idPostagem"));
                     
