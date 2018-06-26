@@ -14,7 +14,7 @@
     Object logado =  request.getSession().getAttribute("logado");
     Object nomeUsuario =  request.getSession().getAttribute("nomeUsuario");
     
-    
+    String busca = request.getParameter("busca");
 
 
 %>
@@ -32,7 +32,7 @@
         <title>Web2</title>
   </head>
 
-  <body onload="carregarPosts()">
+  <body onload="carregarPosts(<%=busca!=null?"'"+busca+"'":""%>)">
       <div class="cabecalho">
       <div class="cabecalhoHeader">
 			<div class="headerMenuButton">
@@ -75,10 +75,10 @@
           var currentTimestamp= "";
           var template = '<div>{{#postagens}}<div class=\"post\"><div class=\"conteudoCab\"><div class=\"img\"><img class=\"imgPost\" src=\'{{imagem}}\'\/><\/div><div class=\"tamanho\"><h1 class=\"label\">{{titulo}}<\/h1><label class=\"textoSup\">{{texto}}<\/label><div id=\"quadroCurtidasPost{{id}}\"><p>Curtidas: <label id=\"curtidasPost{{id}}\">{{curtidas}}<\/label><\/p><a class="btnCurtir" id=\"aCurtir\" onclick=\"curtir({{id}})\">Curtir<\/a><\/div><\/div><\/div><\/div>{{/postagens}}</div>';
           
-          function carregarPosts(){
+          function carregarPosts(busca){
               
               $("#content").addClass("loader");
-              $.get( "API/Posts", function( data ) {
+              $.get( 'API/Posts?busca='+((typeof busca === 'undefined' || busca === null)?'':busca), function( data ) {
                 
                 var d = new Date(); 
                currentTimestamp = d.toLocaleString(); 
@@ -91,7 +91,7 @@
                 document.getElementById('content').innerHTML = result;
                 
                 
-                setInterval(carregarNovosPosts, 3000);
+                //setInterval(carregarNovosPosts, 3000);
                 
                 
               });
