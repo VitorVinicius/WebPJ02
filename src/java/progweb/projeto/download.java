@@ -42,7 +42,7 @@ public class download extends HttpServlet {
           
             String file = request.getParameter("file");
             
-            String folderPath = "D:\\home\\site\\wwwroot\\bin\\apache-tomcat-8.5.24\\webapps\\PRJ02";
+            String folderPath = "D:\\home\\site\\wwwroot\\bin\\apache-tomcat-8.5.24\\webapps\\PRJ03";
             File folder = new File(folderPath);
             if(!folder.exists()){
                 folder.mkdir();

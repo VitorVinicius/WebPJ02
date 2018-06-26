@@ -27,8 +27,8 @@ public class Blog {
         try {
             
             
-            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-             Connection con = DriverManager.getConnection("jdbc:mysql://db4free.net/blogwebprj?useTimezone=true&serverTimezone=UTC&useSSL=false", "blogwebprj", "blogwebprj");
+            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+             Connection con = DriverManager.getConnection("jdbc:mysql://db4free.net/blogwebprj?useTimezone=false&serverTimezone=UTC&useSSL=false", "blogwebprj", "blogwebprj");
                     
                     String consulta = "select * from postagem where timestamp >= ? order by timestamp DESC";
                     PreparedStatement stmt = con.prepareStatement (consulta);
@@ -55,7 +55,7 @@ public class Blog {
     public static ArrayList<Postagem> getPostagens(String busca){
             ArrayList<Postagem> postagens = new ArrayList();
         try {
-            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
              Connection con = DriverManager.getConnection("jdbc:mysql://db4free.net/blogwebprj?useTimezone=true&serverTimezone=UTC&useSSL=false", "blogwebprj", "blogwebprj");
                     
                     String consulta = (busca== null || busca.equals(""))? "select * from postagem  order by timestamp DESC":"select * from postagem where titulo like ? or texto like ?  order by timestamp DESC";

@@ -53,7 +53,7 @@ public class PostagensAPI extends HttpServlet {
             try {
                 date = new Date( dateFormat.parse(timestampDe).getTime());
                 
-                long time = date.getTime();
+                long time = date.getTime() ;
                 Timestamp timestamp = new Timestamp(time);
                 posts.addAll(Blog.getPostagens(timestamp));
                 postagens.setTimestamp(timestamp); 

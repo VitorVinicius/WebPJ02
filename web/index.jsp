@@ -81,6 +81,7 @@
               $.get( 'API/Posts?busca='+((typeof busca === 'undefined' || busca === null)?'':busca), function( data ) {
                 
                 var d = new Date(); 
+                    d = new Date(d.valueOf() + d.getTimezoneOffset() * 60000);
                currentTimestamp = d.toLocaleString(); 
                 
                 $("#content").removeClass("loader");
@@ -113,6 +114,8 @@
                     var cont = document.getElementById('content');
                     cont.innerHTML = result + cont.innerHTML;
                     var d = new Date(); 
+                    d = new Date(d.valueOf() + d.getTimezoneOffset() * 60000);
+                    
                     currentTimestamp = d.toLocaleString(); 
                    
                 }

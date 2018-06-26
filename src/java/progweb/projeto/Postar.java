@@ -47,7 +47,7 @@ public class Postar extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         
         // Create path components to save the file
-        final String path =  "D:\\home\\site\\wwwroot\\bin\\apache-tomcat-8.5.24\\webapps\\PRJ02";//"c:\\arquivos";//
+        final String path =  "D:\\home\\site\\wwwroot\\bin\\apache-tomcat-8.5.24\\webapps\\PRJ03";//"c:\\arquivos";//
         
         final Part videoFilePart = request.getPart("video");
         final String videoFileName = getFileName(videoFilePart);
@@ -108,7 +108,7 @@ public class Postar extends HttpServlet {
             // Registrado o driver, vamos estabelecer uma conexão  
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
                 try ( //Class.forName("com.mysql.jdbc.Driver");
-                        Connection con = DriverManager.getConnection("jdbc:mysql://db4free.net/blogwebprj?useTimezone=true&serverTimezone=UTC&useSSL=false", "blogwebprj", "blogwebprj")) {
+                        Connection con = DriverManager.getConnection("jdbc:mysql://db4free.net/blogwebprj?useTimezone=false&serverTimezone=UTC&useSSL=false", "blogwebprj", "blogwebprj")) {
                     String consulta = "insert into postagem(titulo, imagem, texto,video,nomeUsuario, timestamp) values (?, ?, ?, ?,?,?)";
                     //String consulta = "insert into postagem(titulo, imagem, texto) values ('21312', 'fwe', 'erw')";
                     PreparedStatement stmt = con.prepareStatement (consulta);
