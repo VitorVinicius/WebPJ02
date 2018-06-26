@@ -47,7 +47,7 @@ public class Postar extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         
         // Create path components to save the file
-        final String path = "c:\\arquivos";// "D:\\home\\site\\wwwroot\\bin\\apache-tomcat-8.5.24\\webapps\\PRJ02";
+        final String path =  "D:\\home\\site\\wwwroot\\bin\\apache-tomcat-8.5.24\\webapps\\PRJ02";//"c:\\arquivos";//
         
         final Part videoFilePart = request.getPart("video");
         final String videoFileName = getFileName(videoFilePart);

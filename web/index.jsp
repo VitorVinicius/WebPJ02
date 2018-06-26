@@ -91,7 +91,7 @@
                 document.getElementById('content').innerHTML = result;
                 
                 
-                //setInterval(carregarNovosPosts, 3000);
+                setInterval(carregarNovosPosts, 3000);
                 
                 
               });
