@@ -129,7 +129,7 @@
 
 
             function curtir(idPostagem) {
-                var actionUrl = '/PostagensAPI/Curtir';//alterar para a url da API do servidor
+                var actionUrl = 'PostagensAPI/Curtir';//alterar para a url da API do servidor
 
                 $.post(actionUrl, {idPostagem: idPostagem}
                 , function (receivedData, textStatus, jqXHR) {
@@ -146,7 +146,7 @@
 
 
             function descurtir(idPostagem) {
-                var actionUrl = '/PostagensAPI/Descurtir';//alterar para a url da API do servidor
+                var actionUrl = 'PostagensAPI/Descurtir';//alterar para a url da API do servidor
 
                 $.post(actionUrl, {idPostagem: idPostagem}
                 , function (receivedData, textStatus, jqXHR) {
